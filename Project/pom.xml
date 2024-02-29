@@ -21,7 +21,7 @@ plugins in this file operate inside the "package" and "install" phases.
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.github.lgooddatepicker</groupId>
+    <groupId>custom</groupId>
     <artifactId>LGoodDatePicker</artifactId>
     <version>11.3.0</version>
     <packaging>bundle</packaging>
@@ -51,9 +51,10 @@ plugins in this file operate inside the "package" and "install" phases.
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <!-- <maven.compiler.release>8</maven.compiler.release> you might need to uncomment this this to compile with JDK > 8 -->
+        <!-- Java version -->
+        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.release>11</maven.compiler.release>
         <testrunparams>--add-opens java.desktop/java.awt=ALL-UNNAMED</testrunparams> <!-- allows parameters for the test execution to be set via mvn command line -->
         <license.maven.plugin.version>4.1</license.maven.plugin.version>
     </properties>
@@ -274,13 +275,12 @@ plugins in this file operate inside the "package" and "install" phases.
                 </configuration>
             </plugin>
 
-            <plugin>
+            <!--plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.3.1</version>
                 <configuration>
                     <source>8</source>
-                    <!-- Turn off errors resulting from the new (strict) Java 8 Javadoc standards. -->
                     <doclint>none</doclint>
                 </configuration>
                 <executions>
@@ -291,7 +291,7 @@ plugins in this file operate inside the "package" and "install" phases.
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin-->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
