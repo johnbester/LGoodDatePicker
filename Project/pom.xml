@@ -22,9 +22,9 @@ plugins in this file operate inside the "package" and "install" phases.
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>custom</groupId>
-    <artifactId>LGoodDatePicker</artifactId>
+    <artifactId>lgooddatepicker</artifactId>
     <version>11.3.0</version>
-    <packaging>bundle</packaging>
+    <packaging>jar</packaging>
     <name>LGoodDatePicker</name>
     <description>Java Swing Date Picker. Easy to use, good looking, nice features, and
         localized. Uses the JSR-310 standard.</description>
@@ -50,6 +50,7 @@ plugins in this file operate inside the "package" and "install" phases.
     </scm>
 
     <properties>
+        <version>11.3.0</version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Java version -->
         <maven.compiler.target>11</maven.compiler.target>
@@ -106,7 +107,7 @@ plugins in this file operate inside the "package" and "install" phases.
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.0.1</version>
+                        <version>3.1.0</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -126,62 +127,29 @@ plugins in this file operate inside the "package" and "install" phases.
                     </plugin>
 
                     <plugin>
-                        <artifactId>maven-antrun-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>deployinstall</id>
-                                <phase>install</phase>
-                                <configuration>
-                                    <tasks>
-                                        <echo message = ">>>>>>>>>>>>>>>>>>>>>>>>>>>> install (deploy)"/>
-                                        <delete file="${project.build.directory}/${project.artifactId}-${project.version}.pom.asc"/>
-                                        <copy file="${project.build.directory}/pom-for-users.txt.asc" tofile="${project.build.directory}/${project.artifactId}-${project.version}.pom.asc"/>
-                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar.asc" tofile="${project.build.directory}/${project.artifactId}-${project.version}-unshaded-for-backport.jar.asc"/>
-                                        <delete file="${project.build.directory}/${project.artifactId}-${project.version}.jar.asc"/>
-                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar.asc" tofile="${project.build.directory}/${project.artifactId}-${project.version}.jar.asc"/>
-                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar.asc" tofile="${project.build.directory}/${project.artifactId}-${project.version}-executable-demo.jar.asc"/>
-                                    </tasks>
-                                </configuration>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                        </executions>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>${mavenCompilerVersion}</version>
                     </plugin>
 
-                    <!--
                     <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>1.4.0</version>
-                        <executions>
-                            <execution>
-                                <id>createbundle</id>
-                                <phase>install</phase>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <configuration>
-                                    <executable>${env.JAVA_HOME}/bin/jar</executable>
-                                    <workingDirectory>${project.build.directory}</workingDirectory>
-                                    <arguments>
-                                        <argument>-cvf</argument>
-                                        <argument>Bundle-${project.artifactId}-${project.version}.jar</argument>
-                                        <argument>${project.artifactId}-${project.version}.pom</argument>
-                                        <argument>${project.artifactId}-${project.version}.pom.asc</argument>
-                                        <argument>${project.artifactId}-${project.version}.jar</argument>
-                                        <argument>${project.artifactId}-${project.version}.jar.asc</argument>
-                                        <argument>${project.artifactId}-${project.version}-executable-demo.jar</argument>
-                                        <argument>${project.artifactId}-${project.version}-executable-demo.jar.asc</argument>
-                                        <argument>${project.artifactId}-${project.version}-javadoc.jar</argument>
-                                        <argument>${project.artifactId}-${project.version}-javadoc.jar.asc</argument>
-                                        <argument>${project.artifactId}-${project.version}-sources.jar</argument>
-                                        <argument>${project.artifactId}-${project.version}-sources.jar.asc</argument>
-                                    </arguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin> -->
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <version>${mavenJarPluginVersion}</version>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                                </manifest>
+                                <manifestEntries>
+                                    <Bundle-Version>${version}</Bundle-Version>
+                                    <Bundle-Name>LGoodDatePicker</Bundle-Name>
+                                    <Bundle-Vendor>Nexti SA PTY LTD</Bundle-Vendor>
+                                    <Bundle-SymbolicName>Softco Swing Date extenion</Bundle-SymbolicName>
+                                    <Implementation-Build>${version}</Implementation-Build>
+                                </manifestEntries>
+                            </archive>
+                        </configuration>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
@@ -202,7 +170,7 @@ plugins in this file operate inside the "package" and "install" phases.
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.12.1</version>
                 <configuration>
                     <compilerArgs>
                         <arg>-Xlint:deprecation</arg>
@@ -214,7 +182,7 @@ plugins in this file operate inside the "package" and "install" phases.
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>5.1.1</version>
+                <version>5.1.9</version>
                 <extensions>true</extensions>
                 <executions>
                     <execution>
@@ -244,7 +212,7 @@ plugins in this file operate inside the "package" and "install" phases.
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
+                <version>3.2.5</version>
                 <configuration>
                     <argLine>${testrunparams} -Dfile.encoding=${project.build.sourceEncoding}</argLine>
                 </configuration>
@@ -253,12 +221,13 @@ plugins in this file operate inside the "package" and "install" phases.
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
+                        <phase>verify</phase>
                         <goals>
-                            <goal>jar</goal>
+                            <goal>jar-no-fork</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -267,31 +236,13 @@ plugins in this file operate inside the "package" and "install" phases.
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.3.0</version>
                 <configuration>
                     <archive>
                         <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
                     </archive>
                 </configuration>
             </plugin>
-
-            <!--plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.3.1</version>
-                <configuration>
-                    <source>8</source>
-                    <doclint>none</doclint>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin-->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
